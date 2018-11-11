@@ -1,2 +1,3 @@
-# animath
+# Animath
+
 Pycairo animation
