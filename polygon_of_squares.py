@@ -8,10 +8,10 @@ import moviepy.editor as mpe
 import numpy as np
 from scipy.ndimage import rotate
 
-WIDTH = 200  ## Frame width
-HEIGHT = 200  ## Frame height
+WIDTH = 800  ## Frame width
+HEIGHT = 800  ## Frame height
 LENGTH = WIDTH / 6  ## Length of the small squares
-N_SQUARES = 100
+N_SQUARES = 200
 N_GON = 3  ## # of polygon edges
 RADIUS = WIDTH / 3
 
@@ -21,9 +21,9 @@ MIN_DIST = 0.75 * RADIUS * np.cos(np.pi / N_GON)  ## Minimum center-to-edge dist
 
 ROTATION = False  ## Rotate whole polygon (Little discontinuity in .gif !!)
 
-# DURATION = 6.06  ## Animation duration
-DURATION = 7  ## Animation duration
-FPS = 60
+DURATION = 6.06  ## Animation duration
+PSEUDO_DURATION = 6.06  ## Animation duration with empty frames at the end
+FPS = 30
 
 EXTENSION = 'mp4'
 AUDIO_FILE = "./asset/analog-vintage-loop_double.mp3"
@@ -60,6 +60,11 @@ def half(context, t,
     context.set_source_rgb(0, 0, 0)
     context.rectangle(0, 0, WIDTH, HEIGHT)
     context.fill()
+
+    ## For Instagram
+    if t > DURATION:
+        img = get_image(surface)
+        return (img[:, :width // 2] if (side == "left") else img[:, width // 2:])
 
     ## Inner polygon
     for (r1, a, d1) in points1:
@@ -112,11 +117,11 @@ def half(context, t,
     return (img[:, :width // 2] if (side == "left") else img[:, width // 2:])
 
 def make_frame(t):
-    whole_angle = 360 * t / DURATION  ## Angle of polygon in deg (if rotation is True)
     left_half = half(context, t, side='left')
     right_half = half(context, t, side='right')
     img = np.hstack([left_half, right_half])
     if ROTATION:
+        whole_angle = 360 * t / DURATION
         return rotate(img, whole_angle, reshape=False)
     else:
         return img
@@ -151,7 +156,6 @@ if __name__ == "__main__":
     context.fill()
 
     center = np.array([WIDTH // 2, HEIGHT // 2])  ## Common center
-    
     a = np.linspace(0, 2 * np.pi, N_SQUARES)[:-1]  ## Polar angles of the center of small squares
 
     ## Parametric n-gon equation for 
@@ -166,7 +170,7 @@ if __name__ == "__main__":
     P1 = list(zip(r1, a, d1))
     P2 = list(zip(r2, a, d2))
 
-    videoclip = mpe.VideoClip(make_frame=make_frame, duration=DURATION)
+    videoclip = mpe.VideoClip(make_frame=make_frame, duration=PSEUDO_DURATION)
     if EXTENSION == 'gif':
         videoclip.write_gif(output_file, fps=FPS, program='ImageMagick', opt='OptimizePlus')
     else:
