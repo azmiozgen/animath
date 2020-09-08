@@ -8,8 +8,11 @@ import moviepy.editor as mpe
 import numpy as np
 from scipy.ndimage import rotate
 
-WIDTH = 800  ## Frame width
-HEIGHT = 800  ## Frame height
+from lib import polar2cartesian
+from lib import PI
+
+WIDTH = 700  ## Frame width
+HEIGHT = 700  ## Frame height
 LENGTH = WIDTH / 6  ## Length of the small squares
 N_SQUARES = 200
 N_GON = 3  ## # of polygon edges
@@ -17,21 +20,17 @@ RADIUS = WIDTH / 3
 
 BEAT = True  ## Beat the polygon like a heart
 BEAT_COEFF = 0.81
-MIN_DIST = 0.75 * RADIUS * np.cos(np.pi / N_GON)  ## Minimum center-to-edge distance of polygon
+MIN_DIST = 0.75 * RADIUS * np.cos(PI / N_GON)  ## Minimum center-to-edge distance of polygon
 
 ROTATION = False  ## Rotate whole polygon (Little discontinuity in .gif !!)
 
 DURATION = 6.06  ## Animation duration
 PSEUDO_DURATION = 6.06  ## Animation duration with empty frames at the end
-FPS = 30
+FPS = 2
 
 EXTENSION = 'mp4'
 AUDIO_FILE = "./asset/analog-vintage-loop_double.mp3"
 
-ROOT_OF_3 = math.sqrt(3)
-
-def polar2cartesian(r, theta):
-    return  r * np.array([np.cos(theta), np.sin(theta)])
 
 def get_image(surface):
     image = np.frombuffer(surface.get_data(), np.uint8)
@@ -69,7 +68,7 @@ def half(context, t,
     ## Inner polygon
     for (r1, a, d1) in points1:
         r1 = (radius / 4) * r1
-        angle = -(6 * np.pi * d1 + 2 * t * np.pi / duration)  ## Rotational angle of the small squares
+        angle = -(6 * PI * d1 + 2 * t * PI / duration)  ## Rotational angle of the small squares
 
         distance = r1
         square_center = center + polar2cartesian(distance, a)  ## Center of the small squares
@@ -91,10 +90,10 @@ def half(context, t,
     ## Outer polygon
     for (r2, a, d2) in points2:
         r2 = radius * r2
-        angle = -(6 * np.pi * d2 + 2 * t * np.pi / duration)  ## Rotational angle of the small squares
+        angle = -(6 * PI * d2 + 2 * t * PI / duration)  ## Rotational angle of the small squares
 
         if beat:
-            distance = (r2 - min_dist) * np.fabs(np.sin(np.pi * (n_gon + 2) * beat_coeff * t / duration + np.pi / 2)) + min_dist
+            distance = (r2 - min_dist) * np.fabs(np.sin(PI * (n_gon + 2) * beat_coeff * t / duration + PI / 2)) + min_dist
         else:
             distance = r2
         square_center = center + polar2cartesian(distance, a)  ## Center of the small squares
@@ -156,12 +155,12 @@ if __name__ == "__main__":
     context.fill()
 
     center = np.array([WIDTH // 2, HEIGHT // 2])  ## Common center
-    a = np.linspace(0, 2 * np.pi, N_SQUARES)[:-1]  ## Polar angles of the center of small squares
+    a = np.linspace(0, 2 * PI, N_SQUARES)[:-1]  ## Polar angles of the center of small squares
 
     ## Parametric n-gon equation for 
     ## https://tpfto.wordpress.com/2011/09/15/parametric-equations-for-regular-and-reuleaux-polygons/
-    r1 = np.cos(np.pi / N_GON) / (np.cos(a - (np.pi / N_GON) * (2 * np.floor((N_GON * a) / (2 * np.pi)) + 1)))
-    r2 = np.cos(np.pi / (N_GON + 2)) / (np.cos(a - (np.pi / (N_GON + 2)) * (2 * np.floor(((N_GON + 2) * a) / (2 * np.pi)) + 1)))
+    r1 = np.cos(PI / N_GON) / (np.cos(a - (PI / N_GON) * (2 * np.floor((N_GON * a) / (2 * PI)) + 1)))
+    r2 = np.cos(PI / (N_GON + 2)) / (np.cos(a - (PI / (N_GON + 2)) * (2 * np.floor(((N_GON + 2) * a) / (2 * PI)) + 1)))
 
     d1 = np.cumsum(np.sqrt(((r1[1:] - r1[:-1]) ** 2)))
     d1 = [0] + list(d1 / (d1.max()) + 1e-10)
