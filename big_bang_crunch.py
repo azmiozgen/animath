@@ -17,15 +17,13 @@ DURATION = 8
 PHASE_TIME = DURATION / 4
 FPS = 30
 
-OUTPUT_FILENAME = 'horde.gif'
-
 def get_image(surface):
     image = np.frombuffer(surface.get_data(), np.uint8)
     image = image.reshape((surface.get_height(), surface.get_width(), 4))
     image = image[:, :, [2, 1, 0, 3]]
     return image[:, :, :3]
 
-def set_circle_locations(context):
+def set_circle_locations():
     rs = np.arange(-WIDTH * 0.70, WIDTH * 0.70, WIDTH // 10)
     angles = np.arange(0, 2 * np.pi + 1, PI / 16)
     rs, angles = np.meshgrid(rs, angles)
@@ -52,7 +50,10 @@ def make_frame(t):
     return get_image(surface)
 
 if __name__ == "__main__":
-    output_file = os.path.join('output', OUTPUT_FILENAME)
+    if len(sys.argv) != 2:
+        print('Usage: python {} <output_file>'.format(__file__))
+        sys.exit()
+    output_file = sys.argv[1]
     if os.path.isfile(output_file):
         print(output_file, 'exists. Exiting.')
         sys.exit()
@@ -61,7 +62,7 @@ if __name__ == "__main__":
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, WIDTH)
     context = cairo.Context(surface)
 
-    rs, angles = set_circle_locations(context)
+    rs, angles = set_circle_locations()
 
     clip = mpe.VideoClip(make_frame=make_frame, duration=DURATION)
     clip.write_gif(output_file, fps=FPS, program='imageio', opt='wu')
