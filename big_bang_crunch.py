@@ -20,10 +20,10 @@ FPS = 30
 OUTPUT_FILENAME = 'horde.gif'
 
 def get_image(surface):
-	image = np.frombuffer(surface.get_data(), np.uint8)
-	image = image.reshape((surface.get_height(), surface.get_width(), 4))
-	image = image[:, :, [2, 1, 0, 3]]
-	return image[:, :, :3]
+    image = np.frombuffer(surface.get_data(), np.uint8)
+    image = image.reshape((surface.get_height(), surface.get_width(), 4))
+    image = image[:, :, [2, 1, 0, 3]]
+    return image[:, :, :3]
 
 def set_circle_locations(context):
     rs = np.arange(-WIDTH * 0.70, WIDTH * 0.70, WIDTH // 10)
