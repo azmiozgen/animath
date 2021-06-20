@@ -2,6 +2,45 @@ import numpy as np
 import cairo
 import moviepy.editor as mpy
 
+
+class Rectangle(object):
+    """Rectangle class"""
+
+    def __init__(self, context, x, y, w, h,
+                 fill_rgb=(1, 1, 1),
+                 stroke=False,
+                 line_width=5.0,
+                 gradient=None,
+                 rot_angle=0):
+        self.context = context
+        self.x = x
+        self.y = y
+        self.x_center = x + w / 2
+        self.y_center = y + h / 2
+        self.w = w
+        self.h = h
+        self.fill_rgb = fill_rgb
+        self.stroke = stroke
+        self.line_width = line_width
+        self.gradient = gradient
+        self.rot_angle = rot_angle
+
+    def draw(self):
+        self.context.save()
+        if self.gradient is None:
+            self.context.set_source_rgb(self.fill_rgb[0], self.fill_rgb[1], self.fill_rgb[2])
+        else:
+            self.context.set_source(self.gradient)
+        self.context.set_line_width(self.line_width)
+        self.context.translate(self.x_center, self.y_center)
+        self.context.rotate(self.rot_angle)
+        self.context.translate(-self.w / 2, -self.h / 2)
+        self.context.rectangle(0, 0, self.w, self.h)
+        if self.stroke:
+            self.context.stroke_preserve()
+        self.context.fill()
+        self.context.restore()
+
 class Circle(object):
     """Circle class"""
 
