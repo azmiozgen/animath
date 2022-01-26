@@ -1,6 +1,4 @@
 import numpy as np
-import cairo
-import moviepy.editor as mpy
 
 
 class Rectangle(object):

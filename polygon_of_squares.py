@@ -1,5 +1,4 @@
 import colorsys
-import math
 import os
 import sys
 
@@ -26,7 +25,7 @@ ROTATION = False  ## Rotate whole polygon (Little discontinuity in .gif !!)
 
 DURATION = 6.06  ## Animation duration
 PSEUDO_DURATION = 6.06  ## Animation duration with empty frames at the end
-FPS = 2
+FPS = 20
 
 EXTENSION = 'mp4'
 AUDIO_FILE = "./asset/analog-vintage-loop_double.mp3"

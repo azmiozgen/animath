@@ -1,6 +1,5 @@
 import numpy as np
 
-## Constants
 PI = np.pi
 
 

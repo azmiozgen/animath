@@ -8,9 +8,9 @@ import numpy as np
 from lib import PI
 from objects import Rectangle
 
-WIDTH = 400
-HEIGHT = 400
-SQUARE_W = 32
+WIDTH = 800
+HEIGHT = 800
+SQUARE_W = 64
 
 ROT_F = 2
 DURATION = 8
@@ -77,4 +77,5 @@ if __name__ == "__main__":
     xs, ys = set_square_locations()
 
     clip = mpe.VideoClip(make_frame=make_frame, duration=DURATION)
-    clip.write_gif(output_file, fps=FPS, program='ffmpeg')
+    # clip.write_gif(output_file, fps=FPS, program='ffmpeg')
+    clip.write_gif(output_file, fps=FPS, program='imageio', opt='wu')
