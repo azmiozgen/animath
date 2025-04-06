@@ -14,6 +14,10 @@
 
 ![fall_into_formation](./asset/fall_into_formation.gif "fall into formation")
 
+`python contrast_rain.py contrast_rain.gif`
+
+![contrast_rain](./asset/contrast_rain.gif "contrast rain")
+
 
 ## Installation
 

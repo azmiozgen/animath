@@ -50,7 +50,7 @@ def make_frame(t):
         square_w = SQUARE_W * np.exp(0.5 * (np.sin(2 * PI * ROT_F * ((t + PHASE) / DURATION))))
         x1, y1 = [x - square_w / 2, y - square_w / 2]
         square = Rectangle(context, x=x1, y=y1, w=square_w, h=square_w,
-                           fill_rgb=color,
+                           fill_rgba=color,
                            stroke=True,
                            gradient=None,
                            rot_angle=angle)

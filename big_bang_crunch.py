@@ -44,7 +44,8 @@ def make_frame(t):
         x, y = np.round(polar2cartesian(shifted_r, shifted_angle), 2) + WIDTH / 2
         # x, y = np.round(polar2cartesian(r, angle), 2) + WIDTH / 2
 
-        circle = Circle(context, x=x, y=y, r=CIRCLE_RADIUS, fill_rgb=(1, 1, 1), stroke=True, gradient=None)
+        circle = Circle(context, x=x, y=y, r=CIRCLE_RADIUS, fill_rgba=(1, 1, 1, 1),
+                        stroke=True, gradient=None)
         circle.draw()
 
     return get_image(surface)

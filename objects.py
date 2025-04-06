@@ -5,7 +5,7 @@ class Rectangle(object):
     """Rectangle class"""
 
     def __init__(self, context, x, y, w, h,
-                 fill_rgb=(1, 1, 1),
+                 fill_rgba=(1, 1, 1, 1),
                  stroke=False,
                  line_width=5.0,
                  gradient=None,
@@ -17,7 +17,7 @@ class Rectangle(object):
         self.y_center = y + h / 2
         self.w = w
         self.h = h
-        self.fill_rgb = fill_rgb
+        self.fill_rgba = fill_rgba
         self.stroke = stroke
         self.line_width = line_width
         self.gradient = gradient
@@ -26,7 +26,7 @@ class Rectangle(object):
     def draw(self):
         self.context.save()
         if self.gradient is None:
-            self.context.set_source_rgb(self.fill_rgb[0], self.fill_rgb[1], self.fill_rgb[2])
+            self.context.set_source_rgba(*self.fill_rgba)
         else:
             self.context.set_source(self.gradient)
         self.context.set_line_width(self.line_width)
@@ -42,12 +42,13 @@ class Rectangle(object):
 class Circle(object):
     """Circle class"""
 
-    def __init__(self, context, x, y, r, fill_rgb=(1, 1, 1), stroke=False, line_width=5.0, gradient=None, scaling=None):
+    def __init__(self, context, x, y, r, fill_rgba=(1, 1, 1, 1), stroke=False, line_width=5.0,
+                 gradient=None, scaling=None):
         self.context = context
         self.x = x
         self.y = y
         self.r = r
-        self.fill_rgb = fill_rgb
+        self.fill_rgba = fill_rgba
         self.stroke = stroke
         self.line_width = line_width
         self.gradient = gradient
@@ -56,7 +57,7 @@ class Circle(object):
     def draw(self):
         self.context.save()
         if self.gradient is None:
-            self.context.set_source_rgb(self.fill_rgb[0], self.fill_rgb[1], self.fill_rgb[2])
+            self.context.set_source_rgba(*self.fill_rgba)
         else:
             self.context.set_source(self.gradient)
         self.context.set_line_width(self.line_width)
@@ -73,8 +74,8 @@ class Circle(object):
 
 class Arrow(object):
     """Arrow class"""
-
-    def __init__(self, context, x, y, length, angle, fill_rgb=(1, 1, 1), stroke=False, line_width=1.0, stroke_rgb=(0, 0, 0), gradient=None, scaling=None):
+    def __init__(self, context, x, y, length, angle, fill_rgba=(1, 1, 1, 1), stroke=False,
+                 line_width=1.0, stroke_rgb=(0, 0, 0), gradient=None, scaling=None):
         self.context = context
         self.x = x
         self.y = y
@@ -85,7 +86,7 @@ class Arrow(object):
         self.points.append((x + (self.length * 0.9) * np.cos(self.angle + 0.20), y - (self.length * 0.9) * np.sin(self.angle + 0.20)))
         self.points.append((x + (self.length * 0.9) * np.cos(self.angle - 0.20), y - (self.length * 0.9) * np.sin(self.angle - 0.20)))
 
-        self.fill_rgb = fill_rgb
+        self.fill_rgba = fill_rgba
         self.stroke = stroke
         self.line_width = line_width
         self.stroke_rgb = stroke_rgb
