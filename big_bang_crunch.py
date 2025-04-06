@@ -2,8 +2,8 @@ import os
 import sys
 
 import cairo
-import moviepy.editor as mpe
 import numpy as np
+from moviepy import VideoClip
 
 from lib import PI
 from lib import polar2cartesian
@@ -64,6 +64,8 @@ if __name__ == "__main__":
 
     rs, angles = set_circle_locations()
 
-    clip = mpe.VideoClip(make_frame=make_frame, duration=DURATION)
-    clip.write_gif(output_file, fps=FPS, program='imageio', opt='wu')
+    # clip = mpe.VideoClip(make_frame=make_frame, duration=DURATION)
+    # clip.write_gif(output_file, fps=FPS, program='imageio', opt='wu')
     # clip.write_gif(output_file, fps=FPS, program='ImageMagick', opt='OptimizePlus')
+    clip = VideoClip(frame_function=make_frame, duration=DURATION)
+    clip.write_gif(filename=output_file, fps=FPS, loop=0, logger='bar')

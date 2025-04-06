@@ -3,12 +3,11 @@ import os
 import sys
 
 import cairo
-import moviepy.editor as mpe
 import numpy as np
+from moviepy import AudioFileClip, CompositeAudioClip, VideoClip
 from scipy.ndimage import rotate
 
-from lib import polar2cartesian
-from lib import PI
+from lib import PI, polar2cartesian
 
 WIDTH = 700  ## Frame width
 HEIGHT = 700  ## Frame height
@@ -125,8 +124,7 @@ def make_frame(t):
         return img
 
 
-if __name__ == "__main__":    
-
+if __name__ == '__main__':
     if EXTENSION not in ['gif', 'mp4']:
         print('Choose one of the extension: gif, mp4')
         sys.exit()
@@ -168,11 +166,11 @@ if __name__ == "__main__":
     P1 = list(zip(r1, a, d1))
     P2 = list(zip(r2, a, d2))
 
-    videoclip = mpe.VideoClip(make_frame=make_frame, duration=PSEUDO_DURATION)
+    videoclip = VideoClip(frame_function=make_frame, duration=PSEUDO_DURATION)
     if EXTENSION == 'gif':
         videoclip.write_gif(output_file, fps=FPS, program='ImageMagick', opt='OptimizePlus')
     else:
-        _audioclip = mpe.AudioFileClip(AUDIO_FILE)
-        audioclip = mpe.CompositeAudioClip([_audioclip])
+        _audioclip = AudioFileClip(AUDIO_FILE)
+        audioclip = CompositeAudioClip([_audioclip])
         videoclip.audio = audioclip
         videoclip.write_videofile(output_file, fps=FPS)

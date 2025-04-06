@@ -2,7 +2,7 @@ import os
 import sys
 
 import cairo
-import moviepy.editor as mpe
+import moviepy as VideoClip
 import numpy as np
 
 from lib import PI
@@ -76,6 +76,5 @@ if __name__ == "__main__":
 
     xs, ys = set_square_locations()
 
-    clip = mpe.VideoClip(make_frame=make_frame, duration=DURATION)
-    # clip.write_gif(output_file, fps=FPS, program='ffmpeg')
-    clip.write_gif(output_file, fps=FPS, program='imageio', opt='wu')
+    clip = VideoClip(frame_function=make_frame, duration=DURATION)
+    clip.write_gif(filename=output_file, fps=FPS, loop=0, logger='bar')
